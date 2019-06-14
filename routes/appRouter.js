@@ -1,9 +1,14 @@
 const express = require("express");
 
-const shopController = require("../controller/blood");
+const bloodController = require("../controller/blood");
+const userController = require("../controller/user");
 
 const router = express.Router();
 
-router.get("/", shopController.getIndex);
+router.get("/", bloodController.getIndex);
+
+router.get("/login", userController.getLogin);
+
+router.get("/signUp", userController.getSignUp);
 
 module.exports = { router };

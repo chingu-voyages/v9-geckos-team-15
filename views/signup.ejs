@@ -29,9 +29,11 @@
     <% include ./includes/navigation.ejs %>
     <div class="container">
       <div class="loginContainer">
-        <header class="text-center"><h4>Login</h4></header>
+        <header class="text-center">
+            <h3>Welcome to blood Help</h3>
+            <h4>signUp</h4></header>
         <br />
-        <form>
+        <form action="/signUp" method="POST">
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input
@@ -54,11 +56,17 @@
               placeholder="Password"
             />
           </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Confirm Password"
+            />
+          </div>
 
-          <button type="submit" class="btn btn-primary">login</button>
-          <br />
-          Don't have an account?
-          <a class="btn btn-primary text-right" href="/signUp">Signup</a>
+          <button type="submit" class="btn btn-primary text-right" href="/signUp">Signup</a>
         </form>
       </div>
     </div>
