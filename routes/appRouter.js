@@ -9,6 +9,8 @@ router.get("/", bloodController.getIndex);
 
 router.get("/login", userController.getLogin);
 
-router.get("/signUp", userController.getSignUp);
+router.get("/signup", userController.getSignUp);
+
+router.post("/signup", userController.postSignUp);
 
 module.exports = { router };

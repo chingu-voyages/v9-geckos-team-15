@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Login</title>
+    <title>SignUp</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/login.css" />
@@ -27,19 +27,72 @@
   </head>
   <body>
     <% include ./includes/navigation.ejs %>
+
+ 
+
     <div class="container">
+    
       <div class="loginContainer">
         <header class="text-center">
             <h3>Welcome to blood Help</h3>
             <h4>signUp</h4></header>
         <br />
-        <form action="/signUp" method="POST">
+       
+        <form action="/signup" method="POST">
           <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
+            <label for="name">Full Name</label>
             <input
-              type="email"
+              type="text"
               class="form-control"
-              id="exampleInputEmail1"
+              id="name"
+              placeholder="Enter your name"
+              name="name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input
+              type="number"
+              class="form-control"
+              id="age"
+              name="age"
+              placeholder="Enter your Age"
+              required
+            />
+            <div class="form-group">
+              <label for="bloodGroup">bloodGroup</label>
+              <select class="form-control" id="bloodGroup" name="bloodGroup" required>
+                <option name="A+">A+</option>
+                <option name="A-">A-</option>
+                <option name="B+">B+</option>
+                <option name="B-">B-</option>
+                <option name="O+">O+</option>
+                <option name="O-">O-</option>
+                <option name="AB+">AB+</option>
+                <option name="AB-">AB-</option>
+              </select>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+            Do you opt in or out for donating blood
+            <div class="custom-control custom-radio">
+              <input type="radio" id="yes" name="opt" class="custom-control-input">
+              <label class="custom-control-label" for="yes">Yes</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input type="radio" id="no" name="opt" class="custom-control-input">
+              <label class="custom-control-label" for="no">no</label>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+            required
+              type="email"
+              name="email"
+              class="form-control"
+              id="email"
               aria-describedby="emailHelp"
               placeholder="Enter email"
             />
@@ -48,25 +101,45 @@
             >
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+            <label for="password">Password</label>
             <input
+            required
               type="password"
               class="form-control"
-              id="exampleInputPassword1"
+              id="password"
               placeholder="Password"
+              name="password"
             />
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1">Confirm Password</label>
+            <label for="confirmPassword">Confirm Password</label>
             <input
+            required
               type="password"
               class="form-control"
-              id="exampleInputPassword1"
+              id="confirmPassword"
               placeholder="Confirm Password"
+              name="confirmPassword"
             />
           </div>
-
-          <button type="submit" class="btn btn-primary text-right" href="/signUp">Signup</a>
+          <div id="message">
+              <% if(error==='age') { %>
+                <div class="alert alert-danger" role="alert">
+                   Please note that you must be above 18 to donate blood
+                  </div>
+              <% } %>
+              <% if(error==='password') { %>
+                <div class="alert alert-danger" role="alert">
+                   the password and confirm Password don't match! Please try again
+                  </div>
+              <% } %>
+              <% if(error==='user') { %>
+                <div class="alert alert-danger" role="alert">
+                   the email already exists! Please use the email to login
+                  </div>
+              <% } %>
+            </div>
+          <button type="submit" class="btn btn-primary text-right" href="/signup">Signup</a>
         </form>
       </div>
     </div>
