@@ -35,6 +35,7 @@
           <div class="form-group">
             <label for="email">Email address</label>
             <input
+              required
               type="email"
               class="form-control"
               id="email"
@@ -49,6 +50,7 @@
           <div class="form-group">
             <label for="password">Password</label>
             <input
+              required
               type="password"
               class="form-control"
               id="password"
@@ -56,7 +58,13 @@
               name="password"
             />
           </div>
-
+          <div id="message">
+            <% if(error) { %>
+            <div class="alert alert-danger" role="alert">
+              <%= error %>
+            </div>
+            <% } %>
+          </div>
           <button type="submit" class="btn btn-primary">login</button>
           <br />
           Don't have an account?

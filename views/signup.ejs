@@ -104,6 +104,7 @@
             <label for="password">Password</label>
             <input
             required
+            minlength="8"
               type="password"
               class="form-control"
               id="password"
@@ -118,6 +119,7 @@
               type="password"
               class="form-control"
               id="confirmPassword"
+              minlength="8"
               placeholder="Confirm Password"
               name="confirmPassword"
             />
@@ -136,6 +138,11 @@
               <% if(error==='user') { %>
                 <div class="alert alert-danger" role="alert">
                    the email already exists! Please use the email to login
+                  </div>
+              <% } %>
+              <% if(error==='DATA') { %>
+                <div class="alert alert-danger" role="alert">
+                   DATA INVALID
                   </div>
               <% } %>
             </div>
