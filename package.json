@@ -1,0 +1,25 @@
+{
+  "name": "v9-geckos-team-15",
+  "version": "1.0.0",
+  "description": "Add-project-description-here | Voyage-9 | https://chingu.io/",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aa1aac/v9-geckos-team-15.git"
+  },
+  "author": "gekos-team-15",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aa1aac/v9-geckos-team-15/issues"
+  },
+  "homepage": "https://github.com/aa1aac/v9-geckos-team-15#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.15"
+  }
+}
