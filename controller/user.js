@@ -6,6 +6,13 @@ exports.getLogin = (req, res, next) => {
   res.render("login");
 };
 
+exports.postLogin = (req, res, next) => {
+  const { email } = req.body;
+  const { password } = req.body;
+  console.log(email, password);
+  next();
+};
+
 exports.getSignUp = (req, res, next) => {
   res.render("signup", { error: null });
 };

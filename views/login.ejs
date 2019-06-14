@@ -31,7 +31,7 @@
       <div class="loginContainer">
         <header class="text-center"><h4>Login</h4></header>
         <br />
-        <form>
+        <form method="POST" action="/login">
           <div class="form-group">
             <label for="email">Email address</label>
             <input
@@ -40,6 +40,7 @@
               id="email"
               aria-describedby="emailHelp"
               placeholder="Enter email"
+              name="email"
             />
             <small id="emailHelp" class="form-text text-muted"
               >We'll never share your email with anyone else.</small
@@ -52,6 +53,7 @@
               class="form-control"
               id="password"
               placeholder="Password"
+              name="password"
             />
           </div>
 
