@@ -3,6 +3,26 @@ const bcrypt = require("bcryptjs");
 const User = require("../model/user");
 
 exports.getIndex = (req, res, next) => {
+  const newData = [];
+  if (req.session.isLoggedIn) {
+    User.find({}, (err, data) => {
+      data.forEach((item, index) => {
+        if (item !== req.session.user) {
+          newData.push({
+            email: item.email,
+            age: item.age,
+            name: item.name,
+            bloodGroup: item.bloodGroup
+          });
+        }
+      });
+    });
+    return res.render("index", {
+      isAuthenticated: req.session.isLoggedIn,
+      title: "home",
+      data: newData
+    });
+  }
   res.render("index", {
     isAuthenticated: req.session.isLoggedIn,
     title: "home"
@@ -41,7 +61,7 @@ exports.postLogin = (req, res, next) => {
           });
         }
         return res.status(422).render("login", {
-          error: null,
+          error: "your password was incorrect. Re-enter your correct password",
           isAuthenticated: req.session.isLoggedIn,
           title: "login"
         });
@@ -111,6 +131,18 @@ exports.postSignUp = (req, res, next) => {
       error: "DATA",
       isAuthenticated: req.session.isLoggedIn,
       title: "signup"
+    });
+  }
+};
+
+exports.getLogOut = (req, res, next) => {
+  if (req.session) {
+    req.session.destroy(function(err) {
+      if (err) {
+        return next(err);
+      } else {
+        return res.redirect("/");
+      }
     });
   }
 };

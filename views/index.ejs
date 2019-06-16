@@ -26,8 +26,10 @@
     ></script>
   </head>
   <body>
-    <% include ./includes/navigation.ejs %>
-
-    <script src="" async defer></script>
+    <% include ./includes/navigation.ejs %> <% if(!isAuthenticated) {%>
+    <div class="container">
+      Welcome to blood help
+    </div>
+    <% } %> <% if(isAuthenticated) {%> <%} %>
   </body>
 </html>
