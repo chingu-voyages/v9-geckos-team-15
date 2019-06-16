@@ -3,11 +3,18 @@ const bcrypt = require("bcryptjs");
 const User = require("../model/user");
 
 exports.getIndex = (req, res, next) => {
-  res.render("index");
+  res.render("index", {
+    isAuthenticated: req.session.isLoggedIn,
+    title: "home"
+  });
 };
 
 exports.getLogin = (req, res, next) => {
-  res.render("login", { error: null });
+  res.render("login", {
+    error: null,
+    isAuthenticated: req.session.isLoggedIn,
+    title: "login"
+  });
 };
 
 exports.postLogin = (req, res, next) => {
@@ -17,7 +24,9 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email }).then(user => {
     if (!user) {
       res.render("login", {
-        error: "no user found! Please check the email you entered "
+        error: "no user found! Please check the email you entered ",
+        isAuthenticated: req.session.isLoggedIn,
+        title: "login"
       });
     }
     bcrypt
@@ -32,8 +41,9 @@ exports.postLogin = (req, res, next) => {
           });
         }
         return res.status(422).render("login", {
-          path: "/login",
-          error: null
+          error: null,
+          isAuthenticated: req.session.isLoggedIn,
+          title: "login"
         });
       })
       .catch(err => {
@@ -44,7 +54,11 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.getSignUp = (req, res, next) => {
-  res.render("signup", { error: null });
+  res.render("signup", {
+    error: null,
+    title: "signup",
+    isAuthenticated: req.session.isLoggedIn
+  });
 };
 
 exports.postSignUp = (req, res, next) => {
@@ -57,11 +71,17 @@ exports.postSignUp = (req, res, next) => {
 
   if (age <= 17) {
     res.render("signup", {
-      error: "age"
+      error: "age",
+      isAuthenticated: req.session.isLoggedIn,
+      title: "signup"
     });
   }
   if (confirmPassword !== password) {
-    res.render("signup", { error: "password" });
+    res.render("signup", {
+      error: "password",
+      isAuthenticated: req.session.isLoggedIn,
+      title: "signup"
+    });
   }
   if (name && email && age && password && confirmPassword && bloodGroup) {
     User.findOne({ email: email }).then(user => {
@@ -76,14 +96,21 @@ exports.postSignUp = (req, res, next) => {
           });
           return user
             .save()
-            .then(res.render("login"))
+            .then(res.redirect("/login"))
             .catch(err => console.log(err));
         });
       } else {
-        res.render("signup", { error: "user" });
+        res.render("signup", {
+          error: "user",
+          isAuthenticated: req.session.isLoggedIn
+        });
       }
     });
   } else {
-    res.render("signup", { error: "DATA" });
+    res.render("signup", {
+      error: "DATA",
+      isAuthenticated: req.session.isLoggedIn,
+      title: "signup"
+    });
   }
 };

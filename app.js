@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const mongoDBStore = require("connect-mongodb-session")(session);
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const appRoute = require("./routes/appRouter");
 const User = require("./model/user");
@@ -15,38 +15,26 @@ app.use(express.static("public"));
 const MONGO_URI =
   "mongodb+srv://aa1aac:ipQS0vWOEHBlpB9V@cluster0-tpqkz.mongodb.net/blood";
 
-const store = new mongoDBStore({
+var store = new MongoDBStore({
   uri: MONGO_URI,
-  collection: "session"
+  collection: "sessions"
+});
+
+store.on("error", function(error) {
+  console.log(error);
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(
   session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-    store: store
+    secret: "This is a secret",
+    store: store,
+    resave: true,
+    saveUninitialized: true
   })
 );
 
-app.use((req, res, next) => {
-  // throw new Error('Sync Dummy');
-  if (!req.session.user) {
-    return next();
-  }
-  User.findById(req.session.user._id)
-    .then(user => {
-      if (!user) {
-        return next();
-      }
-      req.user = user;
-      next();
-    })
-    .catch(err => {
-      next(new Error(err));
-    });
-});
 app.set("view engine", "ejs");
 // route handelling
 app.use("/", appRoute.router);
