@@ -148,17 +148,49 @@ exports.getData = (req, res, next) => {
     let on = counter("O-");
     let abp = counter("AB+");
     let abn = counter("AB-");
-    ap.then(count => dataSet.push({ "A+": count }));
-    an.then(count => dataSet.push({ "A-": count }));
-    bp.then(count => dataSet.push({ "B+": count }));
-    bn.then(count => dataSet.push({ "B-": count }));
-    op.then(count => dataSet.push({ "O+": count }));
-    on.then(count => dataSet.push({ "O-": count }));
-    abp.then(count => dataSet.push({ "AB+": count }));
-    abn.then(count => {
-      dataSet.push({ "AB-": count });
-      console.log(dataSet);
-      res.json(dataSet);
-    });
+    ap.then(count => {
+      dataSet.push({ "A+": count });
+      return an;
+    })
+      .then(count => {
+        dataSet.push({ "A-": count });
+        return bp;
+      })
+      .then(count => {
+        dataSet.push({ "B+": count });
+        return bn;
+      })
+      .then(count => {
+        dataSet.push({ "B-": count });
+        return op;
+      })
+      .then(count => {
+        dataSet.push({ "O+": count });
+        return on;
+      })
+      .then(count => {
+        dataSet.push({ "O-": count });
+        return abp;
+      })
+      .then(count => {
+        dataSet.push({ "AB+": count });
+        return abn;
+      })
+      .then(count => {
+        dataSet.push({ "AB-": count });
+        console.log(dataSet);
+        return res.json(dataSet);
+      });
+    // an.then(count => dataSet.push({ "A-": count }));
+    // bp.then(count => dataSet.push({ "B+": count }));
+    // bn.then(count => dataSet.push({ "B-": count }));
+    // op.then(count => dataSet.push({ "O+": count }));
+    // on.then(count => dataSet.push({ "O-": count }));
+    // abp.then(count => dataSet.push({ "AB+": count }));
+    // abn.then(count => {
+    //   dataSet.push({ "AB-": count });
+    //   console.log(dataSet);
+    //   res.json(dataSet);
+    // });
   }
 };

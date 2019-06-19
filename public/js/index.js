@@ -23,8 +23,8 @@ fetch("/index-data-set", {
   .then(value => {
     console.log(value[0]["A+"]);
     var chart = new CanvasJS.Chart("chartContainer", {
-      theme: "light1",
-      animationEnabled: true, // change to true
+      theme: "dark1",
+      animationEnabled: true,
       title: {
         text: "Chart of number of blood donors according to blood group"
       },
