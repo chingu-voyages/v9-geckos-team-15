@@ -3,30 +3,16 @@ const bcrypt = require("bcryptjs");
 const User = require("../model/user");
 
 exports.getIndex = (req, res, next) => {
-  const newData = [];
-  if (req.session.isLoggedIn) {
-    User.find({}, (err, data) => {
-      data.forEach((item, index) => {
-        if (item !== req.session.user) {
-          newData.push({
-            email: item.email,
-            age: item.age,
-            name: item.name,
-            bloodGroup: item.bloodGroup
-          });
-        }
-      });
-    });
-    return res.render("index", {
-      isAuthenticated: req.session.isLoggedIn,
-      title: "home",
-      data: newData
-    });
-  }
-  res.render("index", {
+  return res.render("index", {
     isAuthenticated: req.session.isLoggedIn,
-    title: "home"
+    title: "home",
+    data: [1, 2, 3, 4, 5, 6, 7, 8]
   });
+
+  // return res.render("index", {
+  //   isAuthenticated: req.session.isLoggedIn,
+  //   title: "home"
+  // });
 };
 
 exports.getLogin = (req, res, next) => {
@@ -136,6 +122,7 @@ exports.postSignUp = (req, res, next) => {
 };
 
 exports.getLogOut = (req, res, next) => {
+  let dataSet = [];
   if (req.session) {
     req.session.destroy(function(err) {
       if (err) {
@@ -143,6 +130,35 @@ exports.getLogOut = (req, res, next) => {
       } else {
         return res.redirect("/");
       }
+    });
+  }
+};
+
+exports.getData = (req, res, next) => {
+  let dataSet = [];
+  if (req.session.isLoggedIn) {
+    const counter = value => {
+      return User.countDocuments({ bloodGroup: value });
+    };
+    let ap = counter("A+");
+    let an = counter("A-");
+    let bp = counter("B+");
+    let bn = counter("B-");
+    let op = counter("O+");
+    let on = counter("O-");
+    let abp = counter("AB+");
+    let abn = counter("AB-");
+    ap.then(count => dataSet.push({ "A+": count }));
+    an.then(count => dataSet.push({ "A-": count }));
+    bp.then(count => dataSet.push({ "B+": count }));
+    bn.then(count => dataSet.push({ "B-": count }));
+    op.then(count => dataSet.push({ "O+": count }));
+    on.then(count => dataSet.push({ "O-": count }));
+    abp.then(count => dataSet.push({ "AB+": count }));
+    abn.then(count => {
+      dataSet.push({ "AB-": count });
+      console.log(dataSet);
+      res.json(dataSet);
     });
   }
 };

@@ -18,4 +18,6 @@ router.post("/signup", userController.postSignUp);
 
 router.get("/logout", userController.getLogOut);
 
+router.get("/index-data-set", userController.getData);
+
 module.exports = { router };
