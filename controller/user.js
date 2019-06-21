@@ -194,3 +194,9 @@ exports.getData = (req, res, next) => {
     // });
   }
 };
+
+exports.searchData = (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    const value = req.body.search;
+  }
+};

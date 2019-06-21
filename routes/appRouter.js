@@ -20,4 +20,6 @@ router.get("/logout", userController.getLogOut);
 
 router.get("/index-data-set", userController.getData);
 
+router.post("/search", userController.searchData);
+
 module.exports = { router };
