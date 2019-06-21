@@ -24,16 +24,29 @@
     <% if (isAuthenticated){ %>
     <ul class="navbar-nav">
       <li>
-        <form class="form-inline my-2 my-lg-0">
-          <input
-            class="form-control mr-sm-2 "
-            type="search"
-            placeholder="Search by group"
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-            Search Blood
-          </button>
+        <form>
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenu2"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Search By Blood Group
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <button class="dropdown-item" type="button">A+</button>
+              <button class="dropdown-item" type="button">A-</button>
+              <button class="dropdown-item" type="button">B+</button>
+              <button class="dropdown-item" type="button">B-</button>
+              <button class="dropdown-item" type="button">O+</button>
+              <button class="dropdown-item" type="button">O-</button>
+              <button class="dropdown-item" type="button">AB+</button>
+              <button class="dropdown-item" type="button">AB-</button>
+            </div>
+          </div>
         </form>
       </li>
       <li class="nav-item">
