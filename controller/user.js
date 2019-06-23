@@ -178,25 +178,22 @@ exports.getData = (req, res, next) => {
       })
       .then(count => {
         dataSet.push({ "AB-": count });
-        console.log(dataSet);
         return res.json(dataSet);
       });
-    // an.then(count => dataSet.push({ "A-": count }));
-    // bp.then(count => dataSet.push({ "B+": count }));
-    // bn.then(count => dataSet.push({ "B-": count }));
-    // op.then(count => dataSet.push({ "O+": count }));
-    // on.then(count => dataSet.push({ "O-": count }));
-    // abp.then(count => dataSet.push({ "AB+": count }));
-    // abn.then(count => {
-    //   dataSet.push({ "AB-": count });
-    //   console.log(dataSet);
-    //   res.json(dataSet);
-    // });
   }
 };
 
 exports.searchData = (req, res, next) => {
   if (req.session.isLoggedIn) {
-    const value = req.body.search;
+    let value = req.body.search;
+    // modify the value to some extent
+    value = value.toUpperCase();
+    // search data
+    User.find({ bloodGroup: value }).then(data => {
+      res.render("search", { data, isAuthenticated: true });
+    });
+    //render data to the user
+  } else {
+    res.redirect("/");
   }
 };
