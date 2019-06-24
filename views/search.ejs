@@ -41,7 +41,12 @@
             <br />
             blood Group : <%= user.bloodGroup %>
           </p>
-          <a href="#" class="btn btn-primary">Ask for blood</a>
+          <a
+            href="mailto:<%=user.email %>?Subject=Blood%20Help%20Required&body=Hi%20I'm%20in%20a%20need%20of%20blood%20of%20bloodGroup%20<%=user.bloodGroup %>"
+            target="_blank"
+            class="btn btn-primary"
+            >Ask for blood</a
+          >
         </div>
       </div>
       <% }) %> <% } %>
