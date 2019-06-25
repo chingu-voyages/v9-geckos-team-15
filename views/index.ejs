@@ -6,7 +6,7 @@
     <title>Blood Help:</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="" />
+    <!-- <link rel="stylesheet" href="" /> -->
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       rel="stylesheet"
@@ -25,16 +25,33 @@
       crossorigin="anonymous"
     ></script>
   </head>
+  <link rel="stylesheet" href="/css/index.css" />
   <body>
     <% include ./includes/navigation.ejs %> <% if(!isAuthenticated) {%>
     <div class="container">
-      Welcome to blood help
+      <img src="/images/image.jpg" alt="slogan" />
+      <br />
+      <br />
+      <h4 class="text-center">Welcome to blood Help!</h4>
+      <p class="text">
+        Join and ask for help or help other
+        <br />
+        So,
+        <a href="/signup" class="btn btn-primary">Signup</a> or
+        <a href="/login" class="btn btn-primary">login</a>
+      </p>
     </div>
+
     <% } %> <% if(isAuthenticated) {%>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-
     <script type="text/javascript" src="/js/index.js"></script>
+    <div class="text">
+      <br />
+      <h4>Want Help?</h4>
+      <br />
+      -> Hop over to the Search bar and search for blood group
+    </div>
     <%} %>
   </body>
 </html>
