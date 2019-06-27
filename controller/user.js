@@ -1,6 +1,9 @@
 const bcrypt = require("bcryptjs");
+const SparkPost = require("sparkpost");
 
 const User = require("../model/user");
+
+const client = new SparkPost();
 
 exports.getIndex = (req, res, next) => {
   return res.render("index", {
@@ -100,9 +103,41 @@ exports.postSignUp = (req, res, next) => {
             age,
             bloodGroup
           });
+
           return user
             .save()
-            .then(res.redirect("/login"))
+            .then(user => {
+              client.transmissions
+                .send({
+                  options: {
+                    sandbox: true
+                  },
+                  content: {
+                    from: "testing@sparkpostbox.com",
+                    subject: "Thank you for logging in",
+                    html: `<html>
+                      <body> 
+                       <hr>
+                        <header style=" text-align: center; font-size:20px"> </header> 
+                      </hr>
+                      <p> 
+                        Thank you for logging in to help the people in need
+                      </p>
+                     </body>
+                    </html>`
+                  },
+                  recipients: [{ address: email }]
+                })
+                .then(data => {
+                  console.log("Woohoo! You just sent your first mailing!");
+                  console.log(data);
+                })
+                .catch(err => {
+                  console.log("Whoops! Something went wrong");
+                  console.log(err);
+                });
+              res.redirect("/login");
+            })
             .catch(err => console.log(err));
         });
       } else {
