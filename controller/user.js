@@ -113,7 +113,7 @@ exports.postSignUp = (req, res, next) => {
                     sandbox: true
                   },
                   content: {
-                    from: "testing@sparkpostbox.com",
+                    from: "bloodhelp@bloodhelp.com",
                     subject: "Thank you for logging in",
                     html: `<html>
                       <body> 
@@ -228,6 +228,37 @@ exports.searchData = (req, res, next) => {
       res.render("search", { data, isAuthenticated: true });
     });
     //render data to the user
+  } else {
+    res.redirect("/");
+  }
+};
+
+exports.getForgot = (req, res, next) => {
+  if (!req.session.isLoggedIn) {
+    return res.render("forgot", {
+      isAuthenticated: false,
+      error: null,
+      message: "null"
+    });
+  }
+  return res.redirect("/");
+};
+
+exports.postForgot = (req, res, next) => {
+  console.log(req.body.email);
+  if (!req.session.isLoggedIn) {
+    User.findOne({ email: req.body.email }).then(user => {
+      if (user) {
+        return res.render("forgot", {
+          isAuthenticated: false,
+          message:
+            "please chek your email that we have sent to reset your password"
+        });
+      }
+      if (!user) {
+        return res.render('forgot',{isAuthenticated:false,message:'no such user found! Please re-enter the email-adress'})
+      }
+    });
   } else {
     res.redirect("/");
   }

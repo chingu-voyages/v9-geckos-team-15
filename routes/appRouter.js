@@ -22,6 +22,8 @@ router.get("/index-data-set", userController.getData);
 
 router.post("/search", userController.searchData);
 
+router.get("/forgot", userController.getForgot);
 
+router.post("/forgot", userController.postForgot);
 
 module.exports = { router };
