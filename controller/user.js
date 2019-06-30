@@ -239,7 +239,7 @@ exports.getForgot = (req, res, next) => {
     return res.render("forgot", {
       isAuthenticated: false,
       error: null,
-      message: "null"
+      message: null
     });
   }
   return res.redirect("/");
@@ -251,34 +251,36 @@ exports.postForgot = (req, res, next) => {
       if (user) {
         const token = uniqueId();
         user.resetToken = token;
+        console.log(token);
         user.resetTokenExpiration = Date.now() + 3600000;
-        user.save().then(result => {
-          client.transmissions
-            .send({
-              options: {
-                sandbox: true
-              },
-              content: {
-                from: "bloodhelp@bloodhelp.com",
-                subject: "Reset your password",
-                html: `<html><body><p>
-                <header><h4>Blood help </h4> </header>
-                <br>
-                follow the link below to reset your password:
-                localhost:3000/new-password/${token}
-              </p></body></html>`
-              },
-              recipients: [{ address: req.body.email }]
-            })
-            .then(data => {
-              console.log("Woohoo! You just sent your first mailing!");
-              console.log(data);
-            })
-            .catch(err => {
-              console.log("Whoops! Something went wrong");
-              console.log(err);
-            });
-        });
+        user.save();
+        //   .then(result => {
+        //   client.transmissions
+        //     .send({
+        //       options: {
+        //         sandbox: true
+        //       },
+        //       content: {
+        //         from: "bloodhelp@bloodhelp.com",
+        //         subject: "Reset your password",
+        //         html: `<html><body><p>
+        //         <header><h4>Blood help </h4> </header>
+        //         <br>
+        //         follow the link below to reset your password:
+        //         localhost:3000/new-password/${token}
+        //       </p></body></html>`
+        //       },
+        //       recipients: [{ address: req.body.email }]
+        //     })
+        //     .then(data => {
+        //       console.log("Woohoo! You just sent your first mailing!");
+        //       console.log(data);
+        //     })
+        //     .catch(err => {
+        //       console.log("Whoops! Something went wrong");
+        //       console.log(err);
+        //     });
+        // });
         return res.render("forgot", {
           isAuthenticated: false,
           message:
@@ -292,6 +294,26 @@ exports.postForgot = (req, res, next) => {
         });
       }
     });
+  } else {
+    res.redirect("/");
+  }
+};
+
+exports.getNewPassword = (req, res, next) => {
+  if (!req.session.isLoggedIn) {
+    const { token } = req.params;
+    User.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() }
+    })
+      .then(result => {
+        if (result) {
+          res.render("newPassword", { isAuthenticated: false, error: null });
+        }
+      })
+      .catch(err => {
+        res.redirect("/");
+      });
   } else {
     res.redirect("/");
   }
