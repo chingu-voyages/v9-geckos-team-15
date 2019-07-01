@@ -28,4 +28,6 @@ router.post("/forgot", userController.postForgot);
 
 router.get("/new-password/:token", userController.getNewPassword);
 
+router.post("/new-password", userController.postNewPassword);
+
 module.exports = { router };

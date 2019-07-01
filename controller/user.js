@@ -308,7 +308,13 @@ exports.getNewPassword = (req, res, next) => {
     })
       .then(result => {
         if (result) {
-          res.render("newPassword", { isAuthenticated: false, error: null });
+          console.log(result);
+          res.render("newPassword", {
+            isAuthenticated: false,
+            error: null,
+            token,
+            userId: result._id
+          });
         }
       })
       .catch(err => {
@@ -316,5 +322,48 @@ exports.getNewPassword = (req, res, next) => {
       });
   } else {
     res.redirect("/");
+  }
+};
+
+exports.postNewPassword = (req, res, next) => {
+  const password = req.body.password;
+  const confirmpassword = req.body.confirmpassword;
+  const token = req.body.token;
+  const userId = req.body.userId;
+  console.log(password, confirmpassword, token, userId);
+  if (password === confirmpassword) {
+    let resetUser;
+    User.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() },
+      _id: userId
+    })
+      .then(user => {
+        if (user) {
+          resetUser = user;
+          console.log(user);
+          console.log(resetUser);
+          return bcrypt.hash(password, 12);
+        }
+      })
+      .then(hashedPassword => {
+        resetUser.password = hashedPassword;
+        resetUser.resetToken = undefined;
+        resetUser.resetTokenExpiration = undefined;
+        return resetUser.save();
+      })
+      .then(result => {
+        res.redirect("/login");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  } else {
+    res.render("newPassword", {
+      isAuthenticated: false,
+      error: "the password and confirm password do not match! please re-enter",
+      userId: req.body.userId,
+      token: req.body.token
+    });
   }
 };
