@@ -114,7 +114,7 @@ exports.postSignUp = (req, res, next) => {
                     sandbox: true
                   },
                   content: {
-                    from: "bloodhelp@bloodhelp.com",
+                    from: "testing@sparkpostbox.com",
                     subject: "Thank you for logging in",
                     html: `<html>
                       <body> 
@@ -124,6 +124,9 @@ exports.postSignUp = (req, res, next) => {
                       <p> 
                         Thank you for logging in to help the people in need
                       </p>
+                      <br>
+                      <hr>
+                      --blood Help
                      </body>
                     </html>`
                   },
@@ -253,34 +256,36 @@ exports.postForgot = (req, res, next) => {
         user.resetToken = token;
         console.log(token);
         user.resetTokenExpiration = Date.now() + 3600000;
-        user.save();
-        //   .then(result => {
-        //   client.transmissions
-        //     .send({
-        //       options: {
-        //         sandbox: true
-        //       },
-        //       content: {
-        //         from: "bloodhelp@bloodhelp.com",
-        //         subject: "Reset your password",
-        //         html: `<html><body><p>
-        //         <header><h4>Blood help </h4> </header>
-        //         <br>
-        //         follow the link below to reset your password:
-        //         localhost:3000/new-password/${token}
-        //       </p></body></html>`
-        //       },
-        //       recipients: [{ address: req.body.email }]
-        //     })
-        //     .then(data => {
-        //       console.log("Woohoo! You just sent your first mailing!");
-        //       console.log(data);
-        //     })
-        //     .catch(err => {
-        //       console.log("Whoops! Something went wrong");
-        //       console.log(err);
-        //     });
-        // });
+        user.save().then(result => {
+          client.transmissions
+            .send({
+              options: {
+                sandbox: true
+              },
+              content: {
+                from: "testing@sparkpostbox.com",
+                subject: "Reset your password",
+                html: `<html><body><p>
+                <header><h4>Blood help </h4> </header>
+                <br>
+                follow the link below to reset your password:
+                localhost:3000/new-password/${token}
+              </p>
+              <br>
+              <hr>
+              --blood Help
+              </body></html>`
+              },
+              recipients: [{ address: req.body.email }]
+            })
+            .then(data => {
+              console.log("sent");
+            })
+            .catch(err => {
+              console.log(err);
+              console.log("Something went wrong");
+            });
+        });
         return res.render("forgot", {
           isAuthenticated: false,
           message:
