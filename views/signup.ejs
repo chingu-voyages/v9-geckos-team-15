@@ -47,6 +47,7 @@
               id="name"
               placeholder="Enter your name"
               name="name"
+              value="<%= data.name%>"
               required
             />
           </div>
@@ -59,10 +60,12 @@
               name="age"
               placeholder="Enter your Age"
               required
+              value="<%= data.age%>"
             />
             <div class="form-group">
               <label for="bloodGroup">bloodGroup</label>
-              <select class="form-control" id="bloodGroup" name="bloodGroup" required>
+              <select class="form-control" id="bloodGroup" name="bloodGroup" required >
+                <option name="<%=data.bloodGroup %>"><%=data.bloodGroup %></option>
                 <option name="A+">A+</option>
                 <option name="A-">A-</option>
                 <option name="B+">B+</option>
@@ -95,6 +98,7 @@
               id="email"
               aria-describedby="emailHelp"
               placeholder="Enter email"
+              value="<%= data.email%>"
             />
           </div>
           <div class="form-group">

@@ -67,7 +67,8 @@ exports.getSignUp = (req, res, next) => {
   res.render("signup", {
     error: null,
     title: "signup",
-    isAuthenticated: req.session.isLoggedIn
+    isAuthenticated: req.session.isLoggedIn,
+    data:{name:'',email:'',age:null,bloodGroup:''}
   });
 };
 
@@ -80,17 +81,19 @@ exports.postSignUp = (req, res, next) => {
   const { bloodGroup } = req.body;
 
   if (age <= 17) {
-    res.render("signup", {
+   return  res.render("signup", {
       error: "age",
       isAuthenticated: req.session.isLoggedIn,
-      title: "signup"
+      title: "signup",
+      data: { name, email, age, bloodGroup }
     });
   }
   if (confirmPassword !== password) {
-    res.render("signup", {
+    return res.render("signup", {
       error: "password",
       isAuthenticated: req.session.isLoggedIn,
-      title: "signup"
+      title: "signup",
+      data: { name, email, age, bloodGroup }
     });
   }
   if (name && email && age && password && confirmPassword && bloodGroup) {
@@ -147,7 +150,8 @@ exports.postSignUp = (req, res, next) => {
       } else {
         res.render("signup", {
           error: "user",
-          isAuthenticated: req.session.isLoggedIn
+          isAuthenticated: req.session.isLoggedIn,
+          data: {name,age,email,bloodGroup}
         });
       }
     });
