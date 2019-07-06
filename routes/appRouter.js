@@ -20,7 +20,7 @@ router.get("/logout", userController.getLogOut);
 
 router.get("/index-data-set", userController.getData);
 
-router.post("/search", userController.searchData);
+router.get("/search/", userController.searchData);
 
 router.get("/forgot", userController.getForgot);
 

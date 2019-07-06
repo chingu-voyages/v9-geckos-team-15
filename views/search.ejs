@@ -31,6 +31,7 @@
       access denied
     </div>
     <% } %> <% if(isAuthenticated) { let count=0; %>
+    <div class="container"></div>
     <div class="container">
       <% data.forEach(function(user){ count++;%>
       <div class="card" style="width: 20rem; margin:20px auto; ">
@@ -50,6 +51,29 @@
         </div>
       </div>
       <% }) %> <% } %>
+
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <% if(hasPreviousPage){%>
+            <a
+              class="page-link"
+              href="/search/?search=<%=bloodGroup%>&page=<%= previousPage %>"
+              >Previous</a
+            >
+            <%}%>
+          </li>
+          <li class="page-item">
+            <% if(hasNextPage){ %>
+            <a
+              class="page-link"
+              href="/search/?search=<%=bloodGroup%>&page=<%=nextPage%>"
+              >Next</a
+            >
+            <% } %>
+          </li>
+        </ul>
+      </nav>
     </div>
   </body>
 </html>

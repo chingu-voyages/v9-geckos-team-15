@@ -6,3 +6,7 @@
 
 This is a project created as a part of chingu voyage-9.
 The app is meant to help the people who are in the need of blood.
+
+
+####user stories:
+

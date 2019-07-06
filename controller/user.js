@@ -68,7 +68,7 @@ exports.getSignUp = (req, res, next) => {
     error: null,
     title: "signup",
     isAuthenticated: req.session.isLoggedIn,
-    data:{name:'',email:'',age:null,bloodGroup:''}
+    data: { name: "", email: "", age: null, bloodGroup: "" }
   });
 };
 
@@ -81,7 +81,7 @@ exports.postSignUp = (req, res, next) => {
   const { bloodGroup } = req.body;
 
   if (age <= 17) {
-   return  res.render("signup", {
+    return res.render("signup", {
       error: "age",
       isAuthenticated: req.session.isLoggedIn,
       title: "signup",
@@ -117,8 +117,8 @@ exports.postSignUp = (req, res, next) => {
                     sandbox: true
                   },
                   content: {
-                    from: "testing@sparkpostbox.com",
-                    subject: "Thank you for logging in",
+                    from: "smtp@smtp.sparkpostmail.com",
+                    subject: "Thank you for sigining up",
                     html: `<html>
                       <body> 
                        <hr>
@@ -151,7 +151,7 @@ exports.postSignUp = (req, res, next) => {
         res.render("signup", {
           error: "user",
           isAuthenticated: req.session.isLoggedIn,
-          data: {name,age,email,bloodGroup}
+          data: { name, age, email, bloodGroup }
         });
       }
     });
@@ -159,7 +159,8 @@ exports.postSignUp = (req, res, next) => {
     res.render("signup", {
       error: "DATA",
       isAuthenticated: req.session.isLoggedIn,
-      title: "signup"
+      title: "signup",
+      data: { name, age, email, bloodGroup }
     });
   }
 };
@@ -228,13 +229,48 @@ exports.getData = (req, res, next) => {
 
 exports.searchData = (req, res, next) => {
   if (req.session.isLoggedIn) {
-    let value = req.body.search;
-    // modify the value to some extent
+    const PEOPLE_PER_PAGE = 2;
+    const page = +req.query.page || 1;
+    let totalPeople;
+    let value = req.query.search;
+    let bloodGroupSign = value.split("")[value.length - 1];
+    let bloodGroupview;
+    console.log(bloodGroupSign);
+    if (bloodGroupSign === "+") {
+      let newValue;
+      newValue = value.split("");
+      newValue.pop();
+      newValue.push("%2B");
+      newValue.concat();
+      bloodGroupview = newValue.join("");
+      console.log(bloodGroupview);
+    } else {
+      bloodGroupview = value;
+    }
     value = value.toUpperCase();
     // search data
-    User.find({ bloodGroup: value }).then(data => {
-      res.render("search", { data, isAuthenticated: true });
-    });
+    User.find({ bloodGroup: value })
+      .countDocuments()
+      .then(numPeople => {
+        totalPeople = numPeople;
+        return User.find({ bloodGroup: value })
+          .skip((page - 1) * PEOPLE_PER_PAGE)
+          .limit(PEOPLE_PER_PAGE);
+      })
+      .then(data => {
+        res.render("search", {
+          data,
+          isAuthenticated: true,
+          bloodGroup: bloodGroupview,
+          currentPage: page,
+          page,
+          hasNextPage: PEOPLE_PER_PAGE * page < totalPeople,
+          hasPreviousPage: page > 1,
+          nextPage: page + 1,
+          previousPage: page - 1,
+          lastPage: Math.ceil(totalPeople / PEOPLE_PER_PAGE)
+        });
+      });
     //render data to the user
   } else {
     res.redirect("/");

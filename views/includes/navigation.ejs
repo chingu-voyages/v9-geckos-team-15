@@ -24,7 +24,11 @@
     <% if (isAuthenticated){ %>
     <ul class="navbar-nav">
       <li>
-        <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
+        <!-- <form
+          class="form-inline my-2 my-lg-0"
+          action="/search/?page=1"
+          method="GET"
+        >
           <input
             name="search"
             class="form-control mr-sm-2"
@@ -35,7 +39,32 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
             Search By Group
           </button>
-        </form>
+        </form> -->
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButtonForSearch"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Search By bloodGroup
+          </button>
+          <div
+            class="dropdown-menu"
+            aria-labelledby="dropdownMenuButtonForSearch"
+          >
+            <a class="dropdown-item" href="/search?search=A%2B">A+</a>
+            <a class="dropdown-item" href="/search?search=A-">A-</a>
+            <a class="dropdown-item" href="/search?search=B%2B">B+</a>
+            <a class="dropdown-item" href="/search?search=B-">B-</a>
+            <a class="dropdown-item" href="/search?search=O%2B">O+</a>
+            <a class="dropdown-item" href="/search?search=O-">O-</a>
+            <a class="dropdown-item" href="/search?search=AB%2B">AB+</a>
+            <a class="dropdown-item" href="/search?search=AB-">AB-</a>
+          </div>
+        </div>
       </li>
 
       <li class="nav-item">
