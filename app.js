@@ -38,6 +38,9 @@ app.set("view engine", "ejs");
 // route handelling
 app.use("/", appRoute.router);
 
+app.use("/", (req, res, next) => {
+  res.render("404", { isAuthenticated: req.session.isLoggedin });
+});
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true })
   .then(result => {

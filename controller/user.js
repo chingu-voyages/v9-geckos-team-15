@@ -20,56 +20,69 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  res.render("login", {
-    error: null,
-    isAuthenticated: req.session.isLoggedIn,
-    title: "login"
-  });
+  if (!req.session.isLoggedIn) {
+    res.render("login", {
+      error: null,
+      isAuthenticated: req.session.isLoggedIn,
+      title: "login"
+    });
+  } else {
+    res.render("404", { isAuthenticated: req.session.isLoggedIn });
+  }
 };
 
 exports.postLogin = (req, res, next) => {
-  const { email } = req.body;
-  const { password } = req.body;
+  if (req.session.isLoggedIn) {
+    res.render("404", { isAuthenticated: req.sessiion.isLoggedIn });
+  } else {
+    const { email } = req.body;
+    const { password } = req.body;
 
-  User.findOne({ email }).then(user => {
-    if (!user) {
-      res.render("login", {
-        error: "no user found! Please check the email you entered ",
-        isAuthenticated: req.session.isLoggedIn,
-        title: "login"
-      });
-    }
-    bcrypt
-      .compare(password, user.password)
-      .then(doMatch => {
-        if (doMatch) {
-          req.session.isLoggedIn = true;
-          req.session.user = user;
-          return req.session.save(err => {
-            console.log(err);
-            res.redirect("/");
-          });
-        }
-        return res.status(422).render("login", {
-          error: "your password was incorrect. Re-enter your correct password",
+    User.findOne({ email }).then(user => {
+      if (!user) {
+        res.render("login", {
+          error: "no user found! Please check the email you entered ",
           isAuthenticated: req.session.isLoggedIn,
           title: "login"
         });
-      })
-      .catch(err => {
-        console.log(err);
-        res.redirect("/login");
-      });
-  });
+      }
+      bcrypt
+        .compare(password, user.password)
+        .then(doMatch => {
+          if (doMatch) {
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            return req.session.save(err => {
+              console.log(err);
+              res.redirect("/");
+            });
+          }
+          return res.status(422).render("login", {
+            error:
+              "your password was incorrect. Re-enter your correct password",
+            isAuthenticated: req.session.isLoggedIn,
+            title: "login"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          res.redirect("/login");
+        });
+    });
+  }
 };
 
 exports.getSignUp = (req, res, next) => {
-  res.render("signup", {
-    error: null,
-    title: "signup",
-    isAuthenticated: req.session.isLoggedIn,
-    data: { name: "", email: "", age: null, bloodGroup: "" }
-  });
+  if (!req.session.isLoggedIn) {
+    res.render("signup", {
+      error: null,
+      title: "signup",
+      isAuthenticated: req.session.isLoggedIn,
+      data: { name: "", email: "", age: null, bloodGroup: "" }
+    });
+  } else {
+    res.render("404", { isAuthenticated: req.session.isLoggedIn });
+  }
 };
 
 exports.postSignUp = (req, res, next) => {
@@ -117,7 +130,7 @@ exports.postSignUp = (req, res, next) => {
                     sandbox: true
                   },
                   content: {
-                    from: "smtp@smtp.sparkpostmail.com",
+                    from: "testing@sparkpostbox.com",
                     subject: "Thank you for sigining up",
                     html: `<html>
                       <body> 
@@ -258,17 +271,31 @@ exports.searchData = (req, res, next) => {
           .limit(PEOPLE_PER_PAGE);
       })
       .then(data => {
+        if (!data) {
+          return res.render("search", {
+            data,
+            isAuthenticated: true,
+            bloodGroup: bloodGroupview,
+            currentPage: page,
+            hasNextPage: PEOPLE_PER_PAGE * page < totalPeople,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalPeople / PEOPLE_PER_PAGE),
+            message: "No people with this blood Group found"
+          });
+        }
         res.render("search", {
           data,
           isAuthenticated: true,
           bloodGroup: bloodGroupview,
           currentPage: page,
-          page,
           hasNextPage: PEOPLE_PER_PAGE * page < totalPeople,
           hasPreviousPage: page > 1,
           nextPage: page + 1,
           previousPage: page - 1,
-          lastPage: Math.ceil(totalPeople / PEOPLE_PER_PAGE)
+          lastPage: Math.ceil(totalPeople / PEOPLE_PER_PAGE),
+          message: null
         });
       });
     //render data to the user
