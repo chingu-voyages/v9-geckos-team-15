@@ -248,7 +248,6 @@ exports.searchData = (req, res, next) => {
     let value = req.query.search;
     let bloodGroupSign = value.split("")[value.length - 1];
     let bloodGroupview;
-    console.log(bloodGroupSign);
     if (bloodGroupSign === "+") {
       let newValue;
       newValue = value.split("");
@@ -256,7 +255,6 @@ exports.searchData = (req, res, next) => {
       newValue.push("%2B");
       newValue.concat();
       bloodGroupview = newValue.join("");
-      console.log(bloodGroupview);
     } else {
       bloodGroupview = value;
     }

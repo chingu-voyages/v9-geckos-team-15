@@ -13,8 +13,7 @@ app.use(express.static("views"));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const MONGO_URI =
-  "mongodb+srv://aa1aac:ipQS0vWOEHBlpB9V@cluster0-tpqkz.mongodb.net/blood";
+const { MONGO_URI } = process.env;
 
 var store = new MongoDBStore({
   uri: MONGO_URI,
