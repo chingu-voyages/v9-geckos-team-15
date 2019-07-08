@@ -241,6 +241,7 @@ exports.getData = (req, res, next) => {
 };
 
 exports.searchData = (req, res, next) => {
+  if (req.session.isLoggedIn) {
     const PEOPLE_PER_PAGE = 2;
     const page = +req.query.page || 1;
     let totalPeople;
@@ -296,7 +297,7 @@ exports.searchData = (req, res, next) => {
         });
       });
     //render data to the user
-  
+  } 
 };
 
 exports.getForgot = (req, res, next) => {
