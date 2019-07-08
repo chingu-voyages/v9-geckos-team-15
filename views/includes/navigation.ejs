@@ -21,25 +21,8 @@
         </a>
       </li>
     </ul>
-    <% if (isAuthenticated){ %>
-    <ul class="navbar-nav">
-      <li>
-        <!-- <form
-          class="form-inline my-2 my-lg-0"
-          action="/search/?page=1"
-          method="GET"
-        >
-          <input
-            name="search"
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="use exact value"
-            aria-label="Search By group"
-          />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-            Search By Group
-          </button>
-        </form> -->
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
         <div class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle"
@@ -66,6 +49,10 @@
           </div>
         </div>
       </li>
+    </ul>
+    <% if (isAuthenticated){ %>
+    <ul class="navbar-nav">
+      <li></li>
 
       <li class="nav-item">
         <a href="/logout" class="nav-link">Logout</a>
